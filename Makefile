@@ -20,10 +20,7 @@ obj/%.o: src/%.c
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 clean:
-ifeq ($(PRJ), $(wildcard $(PRJ)))
 	rm -rf $(PRJ) obj
-endif
-	clear
 
 re: clean all
 

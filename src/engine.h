@@ -10,14 +10,14 @@
 #define SIZE 100
 
 struct point {
-	char *name;
-	char *dirname;
+    char *name;
+    char *dirname;
 };
 
 struct bucket {
-	size_t size;
-	struct point *points[SIZE];
-	size_t avail;
+    size_t size;
+    struct point *points[SIZE];
+    size_t avail;
 };
 
 
