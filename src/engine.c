@@ -36,7 +36,7 @@ static int getfname(void)
     const char *homepath = getenv("HOME");
     filename = malloc(FNAME_LEN);
     filename = strcat(filename, homepath);
-    filename = strcat(filename, "/.wreck");
+    filename = strcat(filename, "/.warprc");
     return 0;
 }
 
