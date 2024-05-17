@@ -22,8 +22,6 @@ struct bucket {
 
 
 struct bucket *wd_init();
-void wd_fillpnt(struct point *point, char *line);
-int wd_chkdup(struct bucket *bucket, char *name);
 int wd_add(struct bucket *bucket, char *name);
 int wd_free(struct point *point);
 int wd_rm(struct bucket *bucket, char *name);

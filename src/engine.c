@@ -40,16 +40,22 @@ static int getfname(void)
     return 0;
 }
 
-int wd_help(void)
-{
-    printf("%s", usage);
-    return 1;
+static void fill_namepoint(struct point *point, char *line) {
+    char *tok;
+    tok = strtok(line, DEMIL);
+    point->name = strdup(tok);
+    tok = strtok(NULL, DEMIL);
+    point->dirname  = strdup(tok);
+    point->dirname[strlen(point->dirname) -1] = 0;
 }
 
-int wd_version(void)
-{
-    printf("wd (particle) %.1f\n", VERSION);
-    return 1;
+static int check_duplicate(struct bucket *bucket, char *name) {
+    size_t avail = bucket->avail;
+    for (int i = 0; i < avail; i++) {
+        if (strcmp(bucket->points[i]->name, name) == 0)
+            return 1;
+    }
+    return 0;
 }
 
 struct bucket *wd_init(void) {
@@ -73,31 +79,13 @@ struct bucket *wd_init(void) {
 
     while (fgets(line, SIZE_PNT, f) != NULL) {
         bucket->points[count] = malloc(sizeof(struct point));
-        wd_fillpnt(bucket->points[count], line);
+        fill_namepoint(bucket->points[count], line);
         count++;
     }
 
     bucket->size  = SIZE;
     bucket->avail = count;
     return bucket;
-}
-
-void wd_fillpnt(struct point *point, char *line) {
-    char *tok;
-    tok = strtok(line, DEMIL);
-    point->name = strdup(tok);
-    tok = strtok(NULL, DEMIL);
-    point->dirname  = strdup(tok);
-    point->dirname[strlen(point->dirname) -1] = 0;
-}
-
-int wd_chkdup(struct bucket *bucket, char *name) {
-    size_t avail = bucket->avail;
-    for (int i = 0; i < avail; i++) {
-        if (strcmp(bucket->points[i]->name, name) == 0)
-            return 1;
-    }
-    return 0;
 }
 
 int wd_add(struct bucket *bucket, char *name) {
@@ -107,7 +95,7 @@ int wd_add(struct bucket *bucket, char *name) {
     if (bucket->avail >= bucket->size)
         wd_error("number of space points is full");
 
-    if (wd_chkdup(bucket, name) != 0) {
+    if (check_duplicate(bucket, name) != 0) {
         fprintf(stderr, "Warn: point was dublicated '%s'\n", name);
         return 1;
     }
@@ -177,5 +165,17 @@ int wd_list(void) {
 
     while (fgets(line, SIZE_DIR, f))
         printf("%s", line);
+    return 1;
+}
+
+int wd_help(void)
+{
+    printf("%s", usage);
+    return 1;
+}
+
+int wd_version(void)
+{
+    printf("wd (particle) %.1f\n", VERSION);
     return 1;
 }
