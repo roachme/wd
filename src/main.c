@@ -87,7 +87,6 @@ int main(int argc, char **argv)
     else if (flags[1]) wd_help();
     else if (flags[2]) wd_version();
     else if (flags[3]) wd_list();
-    else wd_help();    /* default: output help message */
 
     /*
        Because we won't handle their output as
