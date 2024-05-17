@@ -154,6 +154,7 @@ int wd_save(struct bucket *bucket) {
     for (int i = 0; i < bucket->avail; i++) {
         if (bucket->points[i]->name == NULL)
             continue;
+        // TODO: make pretty columns
         fprintf(f, "%s:%s\n", bucket->points[i]->name, bucket->points[i]->dirname);
     }
     return 0;
@@ -176,6 +177,5 @@ int wd_list(void) {
 
     while (fgets(line, SIZE_DIR, f))
         printf("%s", line);
-    printf("\n");
     return 1;
 }
