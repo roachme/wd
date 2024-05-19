@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     }
 
     /* Non-optional arguments */
-    if (flags[0])      wd_clean();
+    if (flags[0])      printf("under development\n"); // wd_clean();
     else if (flags[1]) wd_help();
     else if (flags[2]) wd_version();
     else if (flags[3]) wd_list();
