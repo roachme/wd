@@ -19,8 +19,7 @@ const char *usage =
 "  wd [option] [jump point]\n"
 "Options:\n"
 "  -a                         add new directory name point\n"
-"  -c                         clear all directory name point\n"
-"                             TODO: delete non-existing name points\n"
+"  -c                         TODO: clean non-existing name points\n"
 "  -l                         list directory name point\n"
 "  -h                         display this help\n"
 "  -r                         remove directory name point\n";
