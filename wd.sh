@@ -5,6 +5,7 @@ wd() {
 	ret=$?
 
 	if [[ $ret -eq 0 ]];then
+        output="${output/#\~/$HOME}" # Expand tilde to $HOME
 		cd "$output"
 	else
 		if [[ "$output" != "" ]];then
