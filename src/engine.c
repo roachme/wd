@@ -9,7 +9,7 @@
 #define SIZE_DIR    90
 #define SIZE_PNT    SIZE_NAME + SIZE_DIR
 #define FNAME_LEN   20
-#define DEMIL       ":"
+#define DELIM       ":"
 #define VERSION     0.1
 
 
@@ -42,9 +42,9 @@ static int getfname(void)
 
 static void fill_namepoint(struct point *point, char *line) {
     char *tok;
-    tok = strtok(line, DEMIL);
+    tok = strtok(line, DELIM);
     point->name = strdup(tok);
-    tok = strtok(NULL, DEMIL);
+    tok = strtok(NULL, DELIM);
     point->dirname  = strdup(tok);
     point->dirname[strlen(point->dirname) -1] = 0;
 }
