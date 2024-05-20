@@ -34,6 +34,7 @@ static int getfname(void)
 {
     const char *homepath = getenv("HOME");
     filename = malloc(FNAME_LEN);
+    memset(filename, 0, FNAME_LEN);
     filename = strcat(filename, homepath);
     filename = strcat(filename, "/.warprc");
     return 0;
@@ -82,6 +83,8 @@ struct bucket *wd_init(void) {
         count++;
     }
 
+    free(line);
+    fclose(f);
     bucket->size  = SIZE;
     bucket->avail = count;
     return bucket;
@@ -111,6 +114,15 @@ int wd_free(struct point *point) {
     free(point->name);
     free(point->dirname);
     free(point);
+    return 0;
+}
+
+int wd_deinit(struct bucket *bucket) {
+    for (int i = 0; i < bucket->avail; ++i) {
+        wd_free(bucket->points[i]);
+    }
+    free(bucket);
+    free(filename);
     return 0;
 }
 
@@ -144,6 +156,7 @@ int wd_save(struct bucket *bucket) {
         // TODO: make pretty columns
         fprintf(f, "%s:%s\n", bucket->points[i]->name, bucket->points[i]->dirname);
     }
+    fclose(f);
     return 0;
 }
 
@@ -164,6 +177,7 @@ int wd_list(void) {
 
     while (fgets(line, SIZE_DIR, f))
         printf("%s", line);
+    fclose(f);
     return 1;
 }
 

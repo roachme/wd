@@ -92,5 +92,6 @@ int main(int argc, char **argv)
        Because we won't handle their output as
        dirnameectory path. So return 1 instead of 0.
        */
+    wd_deinit(bucket);
     return 1;
 }
