@@ -82,9 +82,7 @@ int wd_init(void) {
 
     getfname();
     if (access(configfile, F_OK) == -1) {
-        FILE *f = fopen(configfile, "w");
-        if (f == NULL)
-            wd_error("cannot open file");
+        wd_error("cannot open file");
     }
 
     FILE *f = fopen(configfile, "r");
@@ -179,6 +177,7 @@ int wd_clean(void) {
     FILE *f = fopen(configfile, "w");
     if (f == NULL)
         wd_error("cannot open file");
+    fclose(f);
     return 1;
 }
 
