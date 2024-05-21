@@ -14,7 +14,7 @@
 #define CONFIG_FILE_SIZE 100
 
 
-char filename[CONFIG_FILE_SIZE];
+char configfile[CONFIG_FILE_SIZE];
 struct bucket bucket;
 
 const char *usage =
@@ -44,8 +44,8 @@ static int wd_error(char *msg) {
 static int getfname(void)
 {
     const char *homepath = getenv("HOME");
-    strcat(filename, homepath);
-    strcat(filename, "/.warprc");
+    strcat(configfile, homepath);
+    strcat(configfile, "/.warprc");
     return 0;
 }
 
@@ -73,13 +73,13 @@ int wd_init(void) {
     char line[BUFSIZ];
 
     getfname();
-    if (access(filename, F_OK) == -1) {
-        FILE *f = fopen(filename, "w");
+    if (access(configfile, F_OK) == -1) {
+        FILE *f = fopen(configfile, "w");
         if (f == NULL)
             wd_error("cannot open file");
     }
 
-    FILE *f = fopen(filename, "r");
+    FILE *f = fopen(configfile, "r");
     if (f == NULL)
         wd_error("can't open file");
 
@@ -149,9 +149,9 @@ int wd_rm(char *name) {
 }
 
 int wd_save() {
-    FILE *f = fopen(filename, "w");
+    FILE *f = fopen(configfile, "w");
     if (f == NULL) {
-        fprintf(stderr, "Error2: can't open file '%s'\n", filename);
+        fprintf(stderr, "Error2: can't open file '%s'\n", configfile);
         return 1;
     }
 
@@ -168,14 +168,14 @@ int wd_save() {
 }
 
 int wd_clean(void) {
-    FILE *f = fopen(filename, "w");
+    FILE *f = fopen(configfile, "w");
     if (f == NULL)
         wd_error("cannot open file");
     return 1;
 }
 
 int wd_list(void) {
-    FILE *f = fopen(filename, "r");
+    FILE *f = fopen(configfile, "r");
     char line[SIZE_DIR];
     struct point point;
 
