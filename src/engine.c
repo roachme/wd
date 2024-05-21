@@ -5,6 +5,11 @@
 #include <unistd.h>
 #include "engine.h"
 
+/*
+1. String padding in C
+   https://stackoverflow.com/questions/276827/string-padding-in-c
+*/
+
 #define SIZE_NAME   10
 #define SIZE_DIR    90
 #define SIZE_PNT    SIZE_NAME + SIZE_DIR
@@ -34,6 +39,19 @@ static int check_duplicate(char *name) {
             return 1;
     }
     return 0;
+}
+
+static int get_longest_name(void)
+{
+    int max = 0;
+
+    for (int i = 0; i < bucket.avail; ++i) {
+        int len = strlen(bucket.points[i]->name);
+        if (len > max) {
+            max = len;
+        }
+    }
+    return max;
 }
 
 static int wd_error(char *msg) {
@@ -177,6 +195,9 @@ int wd_clean(void) {
 int wd_list(void) {
     FILE *f = fopen(configfile, "r");
     char line[SIZE_DIR];
+    int longest_name = get_longest_name();
+    char padding[100] = " ";
+    int padlen;
     struct point point;
 
     if (f == NULL) {
@@ -185,7 +206,8 @@ int wd_list(void) {
 
     while (fgets(line, SIZE_DIR, f)) {
         get_point(&point, line);
-        printf("%s   %s\n", point.name, point.dirname);
+        padlen = longest_name - (int)strlen(point.name);
+        printf("%*.s%s  ->  %s\n", padlen, padding, point.name, point.dirname);
     }
     fclose(f);
     return 1;
