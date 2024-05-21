@@ -112,20 +112,33 @@ char *wd_getdirname(char *name) {
 
 int wd_add(char *name) {
     char dirname[SIZE_DIR];
+    int i;
+
+
     getcwd(dirname, SIZE_DIR);
 
-    if (bucket.avail >= bucket.size)
-        wd_error("number of space points is full");
-
-    if (check_duplicate(name) != 0) {
-        fprintf(stderr, "Warn: point was dublicated '%s'\n", name);
+    if (strlen(name) > POINT_NAME_SIZE) {
+        fprintf(stdout, "wd: too long '%s': point name is too long\n", name);
+        return 1;
+    }
+    if (strlen(dirname) > POINT_DIRNAME_SIZE) {
+        fprintf(stdout, "wd: directory path is too deep\n");
         return 1;
     }
 
-    int i = bucket.avail;
+    if (bucket.avail >= bucket.size) {
+        fprintf(stdout, "wd: number of warp points is full");
+        return 1;
+    }
+    if (check_duplicate(name) != 0) {
+        fprintf(stderr, "wd: warp point '%s' already exists.\n", name);
+        return 1;
+    }
+
+    i = bucket.avail;
     bucket.points[i] = malloc(sizeof(struct point));
-    strncpy(bucket.points[i]->name, name, POINT_NAME_SIZE);
-    strncpy(bucket.points[i]->dirname, dirname, POINT_DIRNAME_SIZE);
+    strcpy(bucket.points[i]->name, name);
+    strcpy(bucket.points[i]->dirname, dirname);
     bucket.avail++;
     return 0;
 }
