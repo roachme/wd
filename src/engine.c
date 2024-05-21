@@ -22,16 +22,6 @@
 char configfile[CONFIG_FILE_SIZE];
 struct bucket bucket;
 
-const char *usage =
-"Usage:\n"
-"  wd [option] [jump point]\n"
-"Options:\n"
-"  -a                         add new directory name point\n"
-"  -c                         TODO: clean non-existing name points\n"
-"  -l                         list directory name point\n"
-"  -h                         display this help\n"
-"  -r                         remove directory name point\n";
-
 static int check_duplicate(char *name) {
     size_t avail = bucket.avail;
     for (int i = 0; i < avail; i++) {
@@ -215,7 +205,16 @@ int wd_list(void) {
 
 int wd_help(void)
 {
-    printf("%s", usage);
+    printf("%s",
+        "Usage:\n"
+        "  wd [option] [jump point]\n"
+        "Options:\n"
+        "  -a                         add new directory name point\n"
+        "  -c                         TODO: clean non-existing name points\n"
+        "  -l                         list directory name point\n"
+        "  -h                         display this help\n"
+        "  -r                         remove directory name point\n"
+    );
     return 1;
 }
 
