@@ -127,7 +127,7 @@ int wd_add(char *name) {
     int i = bucket.avail;
     bucket.points[i] = malloc(sizeof(struct point));
     strncpy(bucket.points[i]->name, name, POINT_NAME_SIZE);
-    strncpy(bucket.points[i]->dirname, name, POINT_DIRNAME_SIZE);
+    strncpy(bucket.points[i]->dirname, dirname, POINT_DIRNAME_SIZE);
     bucket.avail++;
     return 0;
 }
