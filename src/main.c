@@ -11,14 +11,6 @@
    */
 
 
-char *wd_getdirname(struct bucket *bucket, char *name) {
-    int avail = bucket->avail;
-    for (int i = 0; i < avail; i++) {
-        if (strcmp(bucket->points[i]->name, name) == 0)
-            return bucket->points[i]->dirname;
-    }
-    return NULL;
-}
 
 int main(int argc, char **argv)
 {
@@ -26,7 +18,7 @@ int main(int argc, char **argv)
     int flags[] = { 0, 0, 0, 0};
     char *(values[]) = { NULL, NULL };
     char *dirname;
-    struct bucket *bucket = wd_init();
+    wd_init();
 
     opterr = 0;
 
@@ -66,20 +58,21 @@ int main(int argc, char **argv)
 
     /* Jump into dirnameectory */
     for (index = optind; index < argc; index++) {
-        if ((dirname = wd_getdirname(bucket, argv[index])) != NULL) {
+        if ((dirname = wd_getdirname(argv[index])) != NULL) {
             printf("%s", dirname);
+            wd_deinit();
             return 0;
         }
     }
 
     /* Optional arguments */
     if (values[0]) {
-        if(wd_add(bucket, values[0]) == 0)
-            wd_save(bucket);
+        if(wd_add(values[0]) == 0)
+            wd_save();
     }
     else if (values[1]) {
-        if (wd_rm(bucket, values[1]) == 0)
-            wd_save(bucket);
+        if (wd_rm(values[1]) == 0)
+            wd_save();
     }
 
     /* Non-optional arguments */
@@ -92,6 +85,6 @@ int main(int argc, char **argv)
        Because we won't handle their output as
        dirnameectory path. So return 1 instead of 0.
        */
-    wd_deinit(bucket);
+    wd_deinit();
     return 1;
 }

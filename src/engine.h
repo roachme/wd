@@ -7,28 +7,31 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#define SIZE 100
+#define POINT_SIZE          100
+#define POINT_NAME_SIZE     10
+#define POINT_DIRNAME_SIZE  100
 
 struct point {
-    char *name;
-    char *dirname;
+    char name[POINT_NAME_SIZE];
+    char dirname[POINT_DIRNAME_SIZE];
+    //int mark; /* mark that point is in use */
 };
 
 struct bucket {
     size_t size;
-    struct point *points[SIZE];
+    struct point *points[POINT_SIZE];
     size_t avail;
 };
 
-
-struct bucket *wd_init();
-int wd_add(struct bucket *bucket, char *name);
-int wd_free(struct point *point);
-int wd_rm(struct bucket *bucket, char *name);
-int wd_save(struct bucket *bucket);
+/* Public declrations. */
+int wd_init();
+int wd_add(char *name);
+int wd_rm(char *name);
+int wd_save();
 int wd_list(void);
 int wd_clean(void);
 int wd_help(void);
+char *wd_getdirname(char *name);
 int wd_version(void);
-int wd_deinit(struct bucket *bucket);
+int wd_deinit();
 #endif
